@@ -3,5 +3,17 @@
  */
 
 body{
-	
+	background:#247FA3;
+	color:#ffffff;
+}
+.cwp-wrapper{
+	width:1020px;
+	margin:0 auto 0 auto;
+	padding:0;
+}
+#thinking{
+	width:100px;
+	text-align:center;
+	margin:100px auto 0 auto;
+	color:#ffffff;
 }

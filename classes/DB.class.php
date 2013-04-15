@@ -3,8 +3,8 @@
 class DB {
 	
 	protected $db_name = 'planets';
-	protected $db_user = 'root';
-	protected $db_pass = 'culmanq2';
+	protected $db_user = '';
+	protected $db_pass = '';
 	protected $db_host = 'localhost';
 	
 	public function connect(){
@@ -31,12 +31,21 @@ class DB {
 		$query = "SELECT * FROM $table WHERE $where";
 		$result = mysql_query($query);
 		if(mysql_num_rows($result)==1){
-			return $this->processRowSet($rowSet,TRUE);
+			return $this->processRowSet($result,TRUE);
 		}
 		
 		return $this->processRowSet($result);
 	}
 	
+	public function selectALL($table){
+		$query = "SELECT * FROM $table";
+		$result = mysql_query($query);
+		if(mysql_num_rows($result)==1){
+			return $this->processRowSet($result,TRUE);
+		}
+		
+		return $this->processRowSet($result);
+	}
 	public function update($data, $table, $where){
 		foreach($data as $column => $value){
 			$query = "UPDATE $table SET $column = $value WHERE $where";

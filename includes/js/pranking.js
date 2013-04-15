@@ -38,6 +38,6 @@ $(document).ready(function(){
 	}
 	
 	var playersDS = new PlayersDataSet();
-	playersDS.loadgames();
+	//playersDS.loadgames();
 	
 });
