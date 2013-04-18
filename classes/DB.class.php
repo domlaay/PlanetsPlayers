@@ -3,8 +3,8 @@
 class DB {
 	
 	protected $db_name = 'planets';
-	protected $db_user = '';
-	protected $db_pass = '';
+	protected $db_user = 'root';
+	protected $db_pass = 'culmanq2';
 	protected $db_host = 'localhost';
 	
 	public function connect(){
