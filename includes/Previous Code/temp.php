@@ -5,6 +5,9 @@ require_once 'DB.class.php';
 $db = new DB();
 $db->connect();
 
+$table = "p_standard_games";
+
+$games = $db->selectALL($table);
 
 function updateplayer(){
 	$player_instances = $db->selectALL('p_player_instance');

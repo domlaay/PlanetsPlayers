@@ -1,8 +1,10 @@
 <?php
 //DB.class.php
+ini_set('max_execution_time', 300);
+
 class DB {
 	
-	protected $db_name = 'planets';
+	protected $db_name = 'planets2';
 	protected $db_user = 'root';
 	protected $db_pass = 'culmanq2';
 	protected $db_host = 'localhost';
@@ -30,6 +32,7 @@ class DB {
 	public function select($table, $where){
 		$query = "SELECT * FROM $table WHERE $where";
 		$result = mysql_query($query);
+		
 		if(mysql_num_rows($result)==1){
 			return $this->processRowSet($result,TRUE);
 		}
@@ -49,7 +52,7 @@ class DB {
 	public function update($data, $table, $where){
 		foreach($data as $column => $value){
 			$query = "UPDATE $table SET $column = $value WHERE $where";
-			mysql_query($sql) or die(mysql_error());
+			mysql_query($query) or die(mysql_error());
 		}
 		
 		return TRUE;

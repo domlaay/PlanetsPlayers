@@ -5,10 +5,37 @@ require_once 'DB.class.php';
 $db = new DB();
 $db->connect();
 
-$player_instances = $db.select('p_player_instance');
+$table = "p_standard_games";
 
-for($i=0;$i<=count($player_instances);$i++){
-	echo $player_instances[$i];
+$games = $db->selectALL($table);
+
+if(empty($games)){
+	echo "EMPTY!";
 }
+
+function updateplayer(){
+	$player_instances = $db->selectALL('p_player_instance');
+
+	for($i=0;$i<=(count($player_instances)-1);$i++){
+		$username = $player_instances[$i]['username'];
+		$accountid = $player_instances[$i]['accountid'];
+		$weight = 1500;
+		$duplicates = $db->select("p_players","accountid = '$accountid'");
+		
+		if(empty($duplicates)){
+			$table = "p_players";
+			$data = array(
+				"accountid" => "'$accountid'",
+				"username" => "'$username'",
+				"weight" => "'$weight'"
+			);
+			$result = $db->insert($data, $table);
+			
+			echo $username."<br/>".$result." ".$i;
+		}
+	
+	}
+}
+
 
 ?>
