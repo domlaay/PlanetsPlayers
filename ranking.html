@@ -8,13 +8,15 @@
 		<title>Planets Players</title>
 		
 		<link href='http://fonts.googleapis.com/css?family=Cutive+Mono' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Carrois+Gothic+SC' rel='stylesheet' type='text/css'>
 		<link type="text/css" rel="stylesheet" href="includes/css/PRankStyle.css" />
 		
 		
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.2/mustache.min.js"></script>
 		<script type="text/javascript" src="includes/js/jquery.activity-indicator-1.0.0.min.js"></script>
-		<script type="text/javascript" src="includes/js/planets_ranking.js"></script>
+		<script type="text/javascript" src="includes/js/raphael-min.js"></script>
+		<script type="text/javascript" src="includes/js/cp-player-stats.js"></script>
 		
 		
 	</head>
@@ -22,22 +24,53 @@
 	
 	<body>
 		<div id="about_project">
-			<span id="cp_close_about" class="cp-text-button">CLOSE X</span>
+			<span style="float:right;" id="cp_close_about" class="cp-text-button">CLOSE X</span>
 			<div style="width:500px">
 				Hi, and welcome!<br /><br />
-				My name is Cully, and if you play planets you may know me as domlaay.<br /><br />
-				Currently I study computer science at The Evergreen State College in Olympia WA. I also happen to be a big fan of Planets.Nu -<br /><br />
+				My name is Cully, and if you play planets you may know me as Commander Domlaay from the Rebel Confederation, though lately I have been working for the Cylons and the Privateers.<br /><br />
+				Currently, in the real world, I study computer science at The Evergreen State College in Olympia WA.<br /><br />
 				This web page is a project that is fulfilling a requirement for my studies in data and statistics for my "Computing Practice and Theory" class at Evergreen.<br />
-				I want to thank Joshua, and the Planets.Nu community for helping me with this project and for providing a useful and creative project opportunity.
-				To keep track of the project I am syncing my files to github: <a href="https://github.com/domlaay/PlanetsPlayers">https://github.com/domlaay/PlanetsPlayers</a><br /><br />
-				If you are a planets Player - I hope you find this page interesting or useful!<br /><br />
-				And feel free to contact me with comments or suggestions! <br /><br />
+				I want to thank the Planets.Nu community for providing a useful and creative project opportunity.
+				If you are interested in viewing the scripts that run this application you can find them here at github: <a href="https://github.com/domlaay/PlanetsPlayers">https://github.com/domlaay/PlanetsPlayers</a><br /><br />
+				If you are a planets Player - I hope you find this page interesting and useful!<br /><br />
+				See you in the echo cluster...<br /><br />
 				
 				Cully
 			</div>
 		</div>
 		<div id="update_info">
 			
+		</div>
+		<div id="weight_info">
+			<span style="float:right;" id="cp_close_weight" class="cp-text-button">CLOSE X</span>
+			<div style="width:500px;font-size:15pt;">
+				What goes into your weight?
+				<br /><br />
+				These player weights are determined for standard games only from the beginning of the echo cluster.
+				You may update the records by using the "update data" button.
+				If no new games have finished since the last time it was updated, it will say so -
+				Otherwise, give it a few seconds to call the api.<br />
+				You only get points for finishing games.<br />
+				300 points for a 1st place finish.<br />
+				200 for 2nd.<br />
+				150 for 3rd<br />
+				100 4th<br />
+				75 5th<br />
+				60 6th<br />
+				50 7th<br />
+				40 8th<br />
+				30 9th<br />
+				20 10th<br />
+				10 11th<br />
+				
+				You get 1 point for every planet you have ever held at the end of a game.<br />
+				You get 1 point for every turn you have played in a game that you finished.(Even if you joined mid-game, if you finished, you get 1 point for every turn you played)<br />
+				You get 0.5 points for every ship you had at the finish of the game.<br />
+				You get 0.25 points for every starbase you had at the finish.<br />
+				And you get 0.00005 points for every militaryscore "point" that you had at the finish of a game.<br />
+				
+				
+			</div>
 		</div>
 		<div id="thinking">
 				
@@ -56,21 +89,16 @@
 					<li id="cp_about" class="cp-menu-item">
 						about this project
 					</li>
-					
-					<li id="cp_refresh_records" class="cp-menu-item">
-						refresh records
+					<li id="cp_weight_info" class="cp-menu-item">
+						weight info
 					</li>
 					<li id="cp_update_games" class="cp-menu-item">
-						update games
+						update data
 					</li>
-					<li id="cp_update_players" class="cp-menu-item">
-						update players
-					</li>
-					<li id="cp_update_ranking" class="cp-menu-item">
-						update ranking
-					</li>
-				</ul>
 				
+				</ul>
+				<br />
+				<input type="text" size="30" value="username" id="search_input"/><span class="cp-text-button" id="search_button"><b>Search</b></span><br /><span style="font-size:11pt;" class="cp-text-button" id="clear_search_button"><b>Clear Search</b></span>
 			</div>
 			
 			<div id="cp-main-container">
@@ -79,17 +107,51 @@
 		</div>
 		
 		<script type="text/template" id="rankingtemplate">
-			
-			<ul>
-				{{#Players}}
-					<li><ul>
+			<ul id="cp_totals">
+				{{#totals}}
+				<li><b>{{totalgames}}<b /><br /><span style="font-size:12pt;">Finishes</span></li>
+				<li><b>{{totalturns}}<b /><br /><span style="font-size:12pt;">Turns</span></li>
+				<li><b>{{totalplanets}}<b /><br /><span style="font-size:12pt;">Planets</span></li>
+				<li><b>{{totalships}}<b /><br /><span style="font-size:12pt;">Ships</span></li>
+				<li><b>{{totalstarbases}}</b><br /><span style="font-size:12pt;">Starbases</span></li>
+				<li><b>{{totalmilitary}}<b /><br /><span style="font-size:12pt;">Military</span></li>
+				{{/totals}}
+			</ul>
+			<br />
+			<ul id="cp_stats_ul">
+				{{#players}}
+					<li>
+						<div id="{{accountid}}" class="player-stats">
+							<div class="p-stats-float-right">
+								Weight: <span style="font-size:22pt;"><b>{{weight}}</b></span>
+							</div>
+							<div class="p-stats-left">
+								{{username}}
+							</div>
+							<div style="font-size:17pt;" class="cp-lower-stats" id="lower_{{accountid}}">
+								<br />
+								<div class="p-stats-float-right-lower">
+									 <b>{{gamesP}}%</b><br />
+									 <b>{{turnsP}}%</b><br />
+									 <b>{{planetsP}}%</b><br />
+									 <b>{{shipsP}}%</b><br />
+									 <b>{{starbasesP}}%</b><br />
+									 <b>{{militaryP}}%</b><br />
+								</div>
+								<div class="p-stats-left-lower">
+									Games: <b>{{game_count}}</b><br />
+									Turns: <b>{{total_turns}}</b><br />
+									Planets: <b>{{total_planets}}</b><br />
+									Ships: <b>{{total_ships}}</b><br />
+									Starbases: <b>{{total_starbases}}</b><br />
+									Military Score: <b>{{total_militaryscore}}</b><br />
+									
+								</div>
+							</div>
+						</div>
 						
-						
-						<li>{{username}}</li>
-						<li>{{weight}}</li>
-						<li></li>
-					</ul></li>
-				{{/Players}}	
+					</li>
+				{{/players}}	
 			</ul>
 			
 		</script>

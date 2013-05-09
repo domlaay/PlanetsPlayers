@@ -11,7 +11,10 @@ body{
 	background-size:100%;
 	background-repeat:no-repeat;
 	color:#ffffff;
-	font-family: 'Cutive Mono', serif;
+	/*
+	 *font-family: 'Cutive Mono', serif;
+	 */
+	 font-family: 'Carrois Gothic SC', sans-serif;
 }
 /*
  *   ACTIVITY DIV
@@ -44,13 +47,27 @@ body{
 	display:none;
 	z-index:2;
 }
+#weight_info{
+	position:absolute;
+	width:800px;
+	top:50px;
+	left:50%;
+	margin:0px 0px 0px -430px;
+	padding:30px;
+	color:#333;
+	font-size:11pt;
+	background-color:#fff;
+	border-radius:8px;
+	display:none;
+	z-index:2;
+}
 #thinking{
 	position:absolute;
 	top:250px;
 	left:50%;
-	width:100px;
+	width:400px;
 	text-align:center;
-	margin:0 0 0 -50px;
+	margin:0 0 0 -200px;
 	color:#ffffff;
 	z-index: 10;
 }
@@ -65,11 +82,10 @@ body{
 	
 }
 .cp-text-button{
-	float:right;
 	font-weight:700;
 	font-size:18pt;
 	cursor:pointer;
-	margin:20px;
+	margin:0px;
 	padding:0px;
 }
 .cp-text-button:hover{
@@ -150,20 +166,67 @@ body{
 	min-height:200px;
 	margin:30px auto 0px auto;
 	
+	text-align:center;
 }
-#cp-main-container ul{
+#cp_stats_ul{
 	list-style-type:none;
+	margin:0px 0px 0px 25px;
+	padding:0px;
+}
+#cp_stats_ul li{
+	padding:0px;
+	margin:0px;
+	display:inline;
+	font-size: 18pt;
+}
+
+.player-stats{
+	border:1px solid #fff;
+	width:95%;
+	margin:0px;
+	padding:6px;
+	cursor:pointer;
+}
+.p-stats-float-right{
+	width:48%;
+	float:right;
+	text-align:right;
+}
+.p-stats-left{
+	width:48%;
+	text-align:left;
+}
+
+.cp-lower-stats{
+	position:relative;
+	height:200px;
+	background-color:#000;
+	border:1px solid #fff;
+	display:none;
+}
+.p-stats-float-right-lower{
+	width:30%;
+	padding:6px;
+	float:right;
+	text-align:right;
+}
+.p-stats-left-lower{
+	width:55%;
+	padding:6px;
+	text-align:left;
+}
+#cp_totals{
 	margin:0px;
 	padding:0px;
+	list-style-type: none;
 	
 }
-#cp-main-container ul li{
-	padding:3px 24px 3px 24px;
-	margin:6px 0px 0px 0px;
-	display:inline;
-	
-	font-size: 18pt;
-	
+#cp_totals li{
+	width:210px;
+	padding:0px;
+	margin:0px;
+	font-size:24pt;
+	display:inline-block;
+	vertical-align:top;
+	border:1px solid green;
 }
-
-
